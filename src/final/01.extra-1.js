@@ -4,16 +4,18 @@
 
 import * as React from 'react'
 
-function Greeting({initialName = ''}) {
-  const [name, setName] = React.useState(initialName)
+function Greeting({initialName = '',frontName = ''}) {
+  const initStr = frontName ? `${frontName}-${initialName}`:initialName
+  const [name, setName] = React.useState(initStr)
   function handleChange(event) {
-    setName(event.target.value)
+    const tempStr = frontName ? `${frontName}-${event.target.value}`:event.target.value
+    setName(tempStr)
   }
   return (
     <div>
       <form>
         <label htmlFor="name">Name: </label>
-        <input value={name} onChange={handleChange} id="name" />
+        <input onChange={handleChange} id="name" />
       </form>
       {name ? <strong>Hello {name}</strong> : 'Please type your name'}
     </div>
@@ -21,7 +23,7 @@ function Greeting({initialName = ''}) {
 }
 
 function App() {
-  return <Greeting initialName="Kody" />
+  return <Greeting initialName="Kody" frontName={"imaginix"}/>
 }
 
 export default App
