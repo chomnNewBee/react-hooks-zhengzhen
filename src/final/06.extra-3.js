@@ -16,7 +16,7 @@ function PokemonInfo({pokemonName}) {
     pokemon: null,
     error: null,
   })
-  const {status, pokemon, error} = state
+  //const {status, pokemon, error} = state
 
   React.useEffect(() => {
     if (!pokemonName) {
@@ -33,19 +33,19 @@ function PokemonInfo({pokemonName}) {
     )
   }, [pokemonName])
 
-  if (status === 'idle') {
+  if (state.status === 'idle') {
     return 'Submit a pokemon'
-  } else if (status === 'pending') {
+  } else if (state.status === 'pending') {
     return <PokemonInfoFallback name={pokemonName} />
-  } else if (status === 'rejected') {
+  } else if (state.status === 'rejected') {
     return (
       <div>
         There was an error:{' '}
-        <pre style={{whiteSpace: 'normal'}}>{error.message}</pre>
+        <pre style={{whiteSpace: 'normal'}}>{state.error.message}</pre>
       </div>
     )
-  } else if (status === 'resolved') {
-    return <PokemonDataView pokemon={pokemon} />
+  } else if (state.status === 'resolved') {
+    return <PokemonDataView pokemon={state.pokemon} />
   }
 
   throw new Error('This should be impossible')

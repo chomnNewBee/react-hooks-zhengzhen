@@ -23,6 +23,7 @@ function PokemonInfo({pokemonName}) {
       }
     )
     SetPokemon(null)
+    //here need set errorInfo to null,otherwise page will always be error page
     SetErrorInfo(null)
 
   },[pokemonName])
