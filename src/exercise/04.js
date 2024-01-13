@@ -5,7 +5,14 @@ import * as React from 'react'
 
 function Board() {
   // 🐨 squares is the state for this component. Add useState for squares
-  const squares = Array(9).fill(null)
+  //const squares = Array(9).fill(null)
+  const [squares,SetSquares] = React.useState(() => Array(9).fill(null))
+  const [status,SetStatus] = React.useState('')
+  const [winner,SetWinner] = React.useState(null)
+  React.useEffect(()=>{
+    SetStatus(calculateStatus(winner,squares,calculateNextValue(squares)))
+    SetWinner(calculateWinner(squares))
+  },[squares,status,winner])
 
   // 🐨 We'll need the following bits of derived state:
   // - nextValue ('X' or 'O')
@@ -17,6 +24,15 @@ function Board() {
   // This is the function your square click handler will call. `square` should
   // be an index. So if they click the center square, this will be `4`.
   function selectSquare(square) {
+    //if here is already have a chess in board
+    if(squares[square] != null)
+      return
+    if(winner != null)
+      return
+    const nextVal = calculateNextValue(squares)
+    const copy = [...squares]
+    copy[square] = nextVal
+    SetSquares(copy)
     // 🐨 first, if there's already a winner or there's already a value at the
     // given square index (like someone clicked a square that's already been
     // clicked), then return early so we don't make any state changes
@@ -36,6 +52,7 @@ function Board() {
   function restart() {
     // 🐨 reset the squares
     // 💰 `Array(9).fill(null)` will do it!
+    SetSquares(Array(9).fill(null))
   }
 
   function renderSquare(i) {
@@ -49,7 +66,7 @@ function Board() {
   return (
     <div>
       {/* 🐨 put the status in the div below */}
-      <div className="status">STATUS</div>
+      <div className="status">{status}</div>
       <div className="board-row">
         {renderSquare(0)}
         {renderSquare(1)}
