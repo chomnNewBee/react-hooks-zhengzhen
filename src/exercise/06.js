@@ -10,12 +10,20 @@ import {PokemonInfoFallback, PokemonDataView, PokemonForm, fetchPokemon} from '.
 
 function PokemonInfo({pokemonName}) {
   const [pokemon , SetPokemon] = React.useState(null)
+  const [errorInfo, SetErrorInfo] = React.useState(null)
   console.log(pokemonName)
   React.useEffect(() =>{
-    fetchPokemon(pokemonName).then((pokemonData) => {
+    fetchPokemon(pokemonName).then(
+      (pokemonData) => {
       SetPokemon(pokemonData)
-    })
+      },
+      (error) => {
+        console.log(error)
+        SetErrorInfo(error)
+      }
+    )
     SetPokemon(null)
+    SetErrorInfo(null)
 
   },[pokemonName])
 
@@ -37,6 +45,9 @@ function PokemonInfo({pokemonName}) {
   //   3. pokemon: <PokemonDataView pokemon={pokemon} />
 
   // 💣 remove this
+  if(errorInfo){
+    return (<div>{errorInfo.message}</div>)
+  }
   if(!pokemonName){
     return "please input a pokemonName"
   }
